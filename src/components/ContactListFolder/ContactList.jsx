@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import ContactElement from '../ContactElementFolder/ContactElement'
 import {List} from './List.Styled';
 
@@ -14,5 +14,13 @@ const ContactList = ({contacts, onDelete}) =>
             /> 
         )}                 
     </List>
-               
+
+ ContactList.PropTypespropTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
+
  export default ContactList;              
