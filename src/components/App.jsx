@@ -1,46 +1,84 @@
 import { Component } from 'react';
 import 'modern-normalize';
+import ContactForm from './FormFolder/Form';
+import Filter from './FilterFolder/Filter';
+import ContactList from './ContactListFolder/ContactList'
+import { nanoid } from "nanoid";
+import { Wrap } from 'Global.Styles'
 
 export class App extends Component {
   state = {
-  contacts: [],
-  name: ''
+  contacts: [
+    {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+  ],
+  filter:''
+  } 
+
+  deleteContact = contactId => {
+    const{contacts}= this.state
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contacts.id === !contactId),
+    }))
   }
+
+  addContact = (name, number) => {   
+    const { contacts } = this.state;
+    const contact = {
+      id: nanoid(),
+      name,
+      number,
+    }
+     contacts.find(contact => contact.name === name)
+      ? alert(name + ' is already in contacts.')
+      : this.setState(({ contacts }) => ({
+          contacts: [contact, ...contacts],
+        }));
+  }
+
+  ChangeFilter = e => {
+        const {name,value}= e.currentTarget
+        this.setState({[name]:value});
+    } 
+
+  getFilterOnContact = () => {
+    const { contacts, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
   
-  hendlerNameCange = e => {
-    this.setState({name: e.currentTarget.value})
-  }
-
-   hendlerContactCange = e => {
-    this.setState({contacts: e.currentTarget.value})
-  }
   render() {
+    const { filter } = this.state
     return (
-      <>
-         <h1> Phonebook </h1>
-        <form> 
-          <label  htmlFor="fname">Name</label>
-        <input
-            onChange={this.hendlerNameCange}
-            value={this.state.name}
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-          /> 
-          <button>add contact</button>
-      </form>     
-        <h2> Contacts </h2>
-        <ul>
-          <li></li>          
-        </ul>
-       </>
-       
-
-       
-)}
-   
+        <>
+        <Wrap>
+          <h1>
+            Phonebook
+          </h1>
+          <ContactForm
+            onSubmit={this.addContact}
+          />     
+          <h2>
+            Contacts
+          </h2> 
+          <ContactList
+            contacts={this.getFilterOnContact()}
+            onDelete={this.deleteContact}
+          />
+          <Filter
+            value={filter}
+            onChange={this.ChangeFilter}
+          />     
+        </Wrap>
+        </>
+      )   
+    }
   }
 
+ export default App;             
 
