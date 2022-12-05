@@ -45,5 +45,4 @@ export const Wrap = styled.div`
     padding-left: 16px;
     padding-right: 16px;
     padding-bottom: 20px;
-
     `
