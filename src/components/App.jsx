@@ -33,14 +33,15 @@ export class App extends Component {
      contacts.find(contact => contact.name === name)
       ? alert(name + ' is already in contacts.')
       : this.setState(({ contacts }) => ({
-          contacts: [contact, ...contacts],
-        }));
+        contacts: [contact, ...contacts],        
+      }));
+  
   }
 
   ChangeFilter = e => {
         const {name,value}= e.currentTarget
-        this.setState({[name]:value});
-    } 
+    this.setState({ [name]: value });   
+  } 
 
   getFilterOnContact = () => {
     const { contacts, filter } = this.state;
